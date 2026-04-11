@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Rajashekar Vennavelli</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f2e9de;
+      --bg2:      #ebe1d4;
+      --text:     #1c1108;
+      --muted:    #7a6a58;
+      --muted-lt: #a89278;
+      --accent:   #b34e18;
+      --border:   #d8ccbc;
+      --c-hack:   #b34e18;
+      --c-co:     #3d6b4a;
+      --c-exp:    #5a4a7a;
+      --c-res:    #2a5a7a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── Nav ─────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 52px;
+      background: rgba(242, 233, 222, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-back {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    .nav-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Page ────────────────────────────────── */
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 72px 40px 120px;
+    }
+
+    .page-header {
+      margin-bottom: 52px;
+    }
+
+    .page-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 7vw, 80px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .page-desc {
+      font-size: 15px;
+      color: var(--muted);
+      font-style: italic;
+      max-width: 480px;
+    }
+
+    /* ── Filter bar ──────────────────────────── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 28px;
+    }
+
+    .filter-btn {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: none;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--muted); }
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .filter-count {
+      font-size: 9px;
+      opacity: 0.6;
+    }
+
+    /* ── Grid ────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 28px 26px 24px;
+      transition: background 0.18s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover { background: var(--bg2); border-color: var(--muted-lt); }
+    .project-card.hidden { display: none; }
+
+    .card-cats {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .cat-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 0;
+    }
+    .cat-pill.hack    { color: var(--c-hack); background: rgba(179,78,24,0.08); }
+    .cat-pill.company { color: var(--c-co);   background: rgba(61,107,74,0.08); }
+    .cat-pill.exp     { color: var(--c-exp);  background: rgba(90,74,122,0.08); }
+    .cat-pill.research{ color: var(--c-res);  background: rgba(42,90,122,0.08); }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .card-context {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--muted-lt);
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      line-height: 1.68;
+      color: var(--muted);
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .card-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      background: var(--bg2);
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+    }
+
+    .card-links {
+      display: flex;
+      gap: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .card-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .card-link:hover { color: var(--accent); }
+
+    /* empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 0;
+      font-style: italic;
+      color: var(--muted-lt);
+      font-size: 15px;
+      display: none;
+    }
+
+    .fade {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade.in { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 860px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      nav { padding: 18px 24px; }
+      .page { padding: 52px 24px 100px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .filter-bar { gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-back">← Rajashekar Vennavelli</a>
+    <span class="nav-title">Projects</span>
+  </nav>
+
+  <div class="page">
+
+    <div class="page-header fade">
+      <p class="page-label">Work &amp; building</p>
+      <h1 class="page-title">All Projects</h1>
+      <p class="page-desc">Hackathon builds, company work, research, and personal experiments.</p>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar fade">
+      <button class="filter-btn active" data-filter="all">
+        All <span class="filter-count" id="count-all"></span>
+      </button>
+      <button class="filter-btn" data-filter="research">
+        Research <span class="filter-count" id="count-research"></span>
+      </button>
+      <button class="filter-btn" data-filter="hack">
+        SWE / Hackathon <span class="filter-count" id="count-hack"></span>
+      </button>
+      <button class="filter-btn" data-filter="company">
+        Company Affiliated <span class="filter-count" id="count-company"></span>
+      </button>
+      <button class="filter-btn" data-filter="exp">
+        My Experiments <span class="filter-count" id="count-exp"></span>
+      </button>
+    </div>
+
+    <!-- Grid -->
+    <div class="projects-grid" id="grid">
+
+      <!-- ── SWE / Hackathon ─────────────────── -->
+
+      <div class="project-card fade" data-cats="hack">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+        </div>
+        <div class="card-title">Social-Driven Content Automation</div>
+        <div class="card-context">HackPrinceton 2026 · 1st Place · Amazon AGI Labs</div>
+        <p class="card-desc">
+          AI pipeline synthesizing trending content from X, YouTube, and Reddit to automate creation for artists and influencers — using Amazon NovaAct and xAI LLM.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Amazon NovaAct</span>
+          <span class="card-tag">xAI LLM</span>
+          <span class="card-tag">Agents</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/hack-princeton" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+        </div>
+        <div class="card-title">Spec-to-Ship Agentic Builder</div>
+        <div class="card-context">Y Combinator Agents Hackathon 2025 · 1st Place</div>
+        <p class="card-desc">
+          Ingests frontend specs via Notion MCP, builds with Vercel V0, tests via Browser Use MCP, and iterates autonomously until every spec passes.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">MCP</span>
+          <span class="card-tag">Vercel V0</span>
+          <span class="card-tag">Browser Use</span>
+          <span class="card-tag">Notion</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/yc-hack" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack research">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+          <span class="cat-pill research">Research</span>
+        </div>
+        <div class="card-title">HiveMind — AI Peer-to-Peer EdTech</div>
+        <div class="card-context">Stanford TreeHacks 2025 · 1st Place · Education Track</div>
+        <p class="card-desc">
+          Reduces classroom knowledge disparities through AI-powered peer tutoring using Groq, Perplexity Sonar, and InterSystems IRIS Data Platform.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Groq</span>
+          <span class="card-tag">Perplexity Sonar</span>
+          <span class="card-tag">IRIS</span>
+          <span class="card-tag">FastAPI</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/HiveMind" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+        </div>
+        <div class="card-title">Civic OS — Agentic Government Interface</div>
+        <div class="card-context">CalHacks 2025 · 1st Place · Best MCP Integration</div>
+        <p class="card-desc">
+          Natural-language (text, voice, image) interface for government workflows with multi-agent orchestration and XRP Ledger–backed proofs of every AI action.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">MCP</span>
+          <span class="card-tag">XRP Ledger</span>
+          <span class="card-tag">Multi-agent</span>
+          <span class="card-tag">Voice AI</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/calhacks-12" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack research">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+          <span class="cat-pill research">Research</span>
+        </div>
+        <div class="card-title">One Earth — Environmental Reporting AI</div>
+        <div class="card-context">UC Santa Cruz 2025 · 1st Place · Sustainability Grand Prize</div>
+        <p class="card-desc">
+          Multimodal platform using Google Gemini to auto-tag, classify, and severity-score environmental reports, converting citizen inputs into actionable climate intelligence.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Google Gemini</span>
+          <span class="card-tag">Multimodal</span>
+          <span class="card-tag">Climate Tech</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/one-earth" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack research">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+          <span class="cat-pill research">Research</span>
+        </div>
+        <div class="card-title">Pneumonia Diagnostic via LLM + Vector Search</div>
+        <div class="card-context">HackMIT 2023 · 1st Place</div>
+        <p class="card-desc">
+          Clinical AI using InterSystems IRIS vector search to match patient data against case studies, accelerating pneumonia diagnosis with LLM-powered reasoning chains.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">IRIS Vector Search</span>
+          <span class="card-tag">LLM</span>
+          <span class="card-tag">Healthcare AI</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/hackmit-24" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+        </div>
+        <div class="card-title">Production SLM Security Classifier</div>
+        <div class="card-context">AGI House SLM Build Day 2025 · 1st Place</div>
+        <p class="card-desc">
+          Fine-tuned Qwen-3 on AWS Trainium for real-time GitHub security alert classification. End-to-end pipeline: webhooks → SIEM → WebSockets → automated IAM key rotation.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Qwen-3</span>
+          <span class="card-tag">AWS Trainium</span>
+          <span class="card-tag">Fine-tuning</span>
+          <span class="card-tag">Security</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/sakomws/slm" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="hack">
+        <div class="card-cats">
+          <span class="cat-pill hack">SWE / Hackathon</span>
+        </div>
+        <div class="card-title">Multimodal Health Tracking System</div>
+        <div class="card-context">CalHacks 2023 · 1st Place · ML Innovation Challenge</div>
+        <p class="card-desc">
+          Prescription scanning, nutrient analysis, and real-time health monitoring with Raspberry Pi hardware + autonomous disaster response simulation with HumeAI emotional intelligence.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Raspberry Pi</span>
+          <span class="card-tag">HumeAI</span>
+          <span class="card-tag">OpenAI</span>
+          <span class="card-tag">Next.js</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/rajashekarcs2023/CalHacks23" target="_blank" class="card-link">GitHub ↗</a>
+          <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="card-link">Devpost ↗</a>
+        </div>
+      </div>
+
+      <!-- ── Company Affiliated ──────────────── -->
+
+      <div class="project-card fade" data-cats="company">
+        <div class="card-cats">
+          <span class="cat-pill company">Company Affiliated</span>
+        </div>
+        <div class="card-title">29-Agent AI Film Studio</div>
+        <div class="card-context">Fetch.ai · Demoed at Google HQ, Agentic Interop Summit</div>
+        <p class="card-desc">
+          29 coordinated uAgents orchestrating Google Veo 3.1, Gemini Flash, Lyria, and TTS to generate fully produced 8-scene cinematic short films from a single text prompt in ~90 seconds.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">uAgents</span>
+          <span class="card-tag">Google Veo 3.1</span>
+          <span class="card-tag">Gemini</span>
+          <span class="card-tag">FFmpeg</span>
+        </div>
+        <div class="card-links">
+          <a href="https://fetch.ai" target="_blank" class="card-link">Fetch.ai ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="company">
+        <div class="card-cats">
+          <span class="cat-pill company">Company Affiliated</span>
+        </div>
+        <div class="card-title">Google A2A Protocol Bridge</div>
+        <div class="card-context">Fetch.ai</div>
+        <p class="card-desc">
+          Designed and implemented a bi-directional adapter between Fetch.ai's uAgents ecosystem and Google's Agent-to-Agent protocol — enabling seamless plug-and-use across both agent networks.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">uAgents</span>
+          <span class="card-tag">Google A2A</span>
+          <span class="card-tag">Protocol Design</span>
+        </div>
+        <div class="card-links">
+          <a href="https://fetch.ai" target="_blank" class="card-link">Fetch.ai ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="company">
+        <div class="card-cats">
+          <span class="cat-pill company">Company Affiliated</span>
+        </div>
+        <div class="card-title">Agentverse Marketplace Integrations</div>
+        <div class="card-context">Fetch.ai</div>
+        <p class="card-desc">
+          Built integration packages for ASI:One LLM with LangChain, LiteLLM, LlamaIndex, and Skyfire — plus adapters for MCP, LangGraph, and CrewAI agents for Agentverse marketplace discovery.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">LangChain</span>
+          <span class="card-tag">LiteLLM</span>
+          <span class="card-tag">CrewAI</span>
+          <span class="card-tag">MCP</span>
+        </div>
+        <div class="card-links">
+          <a href="https://fetch.ai" target="_blank" class="card-link">Fetch.ai ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="company">
+        <div class="card-cats">
+          <span class="cat-pill company">Company Affiliated</span>
+        </div>
+        <div class="card-title">AI Document Generation Platform</div>
+        <div class="card-context">AtlasNova AI</div>
+        <p class="card-desc">
+          Enterprise document generation system integrating GPT-4, Claude, and Gemini with custom RAG pipelines via Pinecone — deployed as serverless workflows on AWS Lambda, cutting latency 40%.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">GPT-4</span>
+          <span class="card-tag">Pinecone</span>
+          <span class="card-tag">AWS Lambda</span>
+          <span class="card-tag">RAG</span>
+        </div>
+        <div class="card-links">
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="company">
+        <div class="card-cats">
+          <span class="cat-pill company">Company Affiliated</span>
+        </div>
+        <div class="card-title">Hackathon Support Agent</div>
+        <div class="card-context">Fetch.ai · 1,200-participant hackathon</div>
+        <p class="card-desc">
+          ReAct-style orchestration agent retrieving answers from live Discord, Google Docs, and static KB in parallel — with smart escalation routing to human organizers via webhooks when confidence is low.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">ReAct</span>
+          <span class="card-tag">OpenAI</span>
+          <span class="card-tag">Discord</span>
+          <span class="card-tag">RAG</span>
+        </div>
+        <div class="card-links">
+          <a href="https://fetch.ai" target="_blank" class="card-link">Fetch.ai ↗</a>
+        </div>
+      </div>
+
+      <!-- ── My Experiments ──────────────────── -->
+
+      <div class="project-card fade" data-cats="exp">
+        <div class="card-cats">
+          <span class="cat-pill exp">My Experiments</span>
+        </div>
+        <div class="card-title">Browser Automation Primitives</div>
+        <div class="card-context">Personal exploration</div>
+        <p class="card-desc">
+          Domain-specific tools for credit card iframe filling, OTP interception, and date/time selection. Custom tools dramatically outperform pure LLM approaches for repetitive, high-stakes form interactions.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Browser-use</span>
+          <span class="card-tag">CDP</span>
+          <span class="card-tag">Automation</span>
+        </div>
+        <div class="card-links">
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="exp research">
+        <div class="card-cats">
+          <span class="cat-pill exp">My Experiments</span>
+          <span class="cat-pill research">Research</span>
+        </div>
+        <div class="card-title">SLM Fine-tuning on Edge Hardware</div>
+        <div class="card-context">Personal exploration</div>
+        <p class="card-desc">
+          Fine-tuned Qwen-3 on AWS Trainium for narrow classification tasks. Finding: well-curated training data on a small model can match frontier models at a fraction of inference cost.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Qwen-3</span>
+          <span class="card-tag">AWS Trainium</span>
+          <span class="card-tag">Fine-tuning</span>
+        </div>
+        <div class="card-links">
+        </div>
+      </div>
+
+      <div class="project-card fade" data-cats="exp">
+        <div class="card-cats">
+          <span class="cat-pill exp">My Experiments</span>
+        </div>
+        <div class="card-title">Live Event Ordering Agent</div>
+        <div class="card-context">Personal exploration</div>
+        <p class="card-desc">
+          Stateful LangGraph agent with Square Payments integration serving 100+ attendees. The hard part: keeping conversation context coherent as people rejoined mid-order hours later.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">LangGraph</span>
+          <span class="card-tag">Square API</span>
+          <span class="card-tag">PostgreSQL</span>
+        </div>
+        <div class="card-links">
+        </div>
+      </div>
+
+      <!-- empty state -->
+      <div class="empty-state" id="empty-state">
+        Nothing here yet.
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Fade in
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('in'); observer.unobserve(en.target); }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+    // Count projects per category
+    const cards = Array.from(document.querySelectorAll('.project-card'));
+    const cats = ['all', 'research', 'hack', 'company', 'exp'];
+
+    cats.forEach(cat => {
+      const count = cat === 'all'
+        ? cards.length
+        : cards.filter(c => c.dataset.cats.includes(cat)).length;
+      const el = document.getElementById('count-' + cat);
+      if (el) el.textContent = count;
+    });
+
+    // Filter
+    const buttons = document.querySelectorAll('.filter-btn');
+    const empty = document.getElementById('empty-state');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        let visible = 0;
+
+        cards.forEach(card => {
+          const match = filter === 'all' || card.dataset.cats.includes(filter);
+          card.classList.toggle('hidden', !match);
+          if (match) visible++;
+        });
+
+        empty.style.display = visible === 0 ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

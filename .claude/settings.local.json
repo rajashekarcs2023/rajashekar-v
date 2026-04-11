@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open /Users/radhikadanda/rajashekar-v/projects.html)",
+      "Bash(open /Users/radhikadanda/rajashekar-v/index.html)"
+    ]
+  }
+}

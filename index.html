@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rajashekar Vennavelli</title>
+  <meta name="description" content="AI Engineer at Fetch.ai. Building multi-agent systems at the frontier of AI.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f2e9de;
+      --bg2:      #ebe1d4;
+      --text:     #1c1108;
+      --muted:    #7a6a58;
+      --muted-lt: #a89278;
+      --accent:   #b34e18;
+      --border:   #d8ccbc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    /* subtle paper texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── Nav ─────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 52px;
+      background: rgba(242, 233, 222, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Wrapper ─────────────────────────────── */
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      padding: 100px 32px 90px;
+      max-width: 780px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 210px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .hero-photo-wrap {
+      padding-top: 52px;
+    }
+
+    .hero-photo-wrap img {
+      width: 100%;
+      display: block;
+      filter: sepia(0.08) contrast(1.01) brightness(0.99);
+      border: 1px solid var(--border);
+    }
+
+    /* nav coming-soon link */
+    .nav-coming {
+      opacity: 0.4;
+      pointer-events: none;
+      position: relative;
+    }
+    .nav-coming::after {
+      content: 'soon';
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      background: var(--bg2);
+      padding: 1px 5px;
+      margin-left: 5px;
+      vertical-align: 2px;
+    }
+
+    .hero-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.3;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(58px, 10vw, 110px);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 36px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 44px;
+    }
+
+    .tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+    }
+
+    .hero-bio {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 560px;
+    }
+    .hero-bio a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .hero-bio a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Divider ─────────────────────────────── */
+    .divider {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .divider hr {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Section ─────────────────────────────── */
+    .section {
+      padding: 72px 32px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 46px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 44px;
+      line-height: 1;
+    }
+
+    /* ── Work list ───────────────────────────── */
+    .work-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 32px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+    .work-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .work-meta {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted-lt);
+      line-height: 1.6;
+      padding-top: 4px;
+    }
+
+    .work-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .work-co {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .work-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── Hackathon entries ───────────────────── */
+    .hack-entry {
+      padding: 44px 0;
+      border-top: 1px solid var(--border);
+    }
+    .hack-entry:last-child { border-bottom: 1px solid var(--border); }
+
+    .hack-badge {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .hack-event-meta {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--muted-lt);
+      margin-bottom: 18px;
+    }
+
+    .hack-proj-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 27px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .hack-proj-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 22px;
+      max-width: 600px;
+    }
+
+    .hack-links {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hack-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hack-link:hover { color: var(--accent); border-color: var(--accent); }
+    .hack-link.photos { color: var(--muted-lt); opacity: 0.5; pointer-events: none; }
+    .hack-link.photos[href]:not([href="#"]) { opacity: 1; pointer-events: auto; }
+
+    /* ── Featured projects ───────────────────── */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 44px;
+    }
+    .section-head .section-label { margin-bottom: 0; }
+
+    .view-all {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .view-all:hover { color: var(--accent); border-color: var(--accent); }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 26px 24px 22px;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.18s, border-color 0.2s;
+    }
+    .feat-card:hover { background: var(--bg2); border-color: var(--muted-lt); }
+
+    .feat-cat {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .feat-cat.company { color: #3d6b4a; }
+    .feat-cat.hack    { color: var(--accent); }
+
+    .feat-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .feat-context {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: var(--muted-lt);
+      margin-bottom: 10px;
+    }
+
+    .feat-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
+      flex: 1;
+      margin-bottom: 18px;
+    }
+
+    .feat-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .feat-link:hover { color: var(--accent); }
+
+    /* ── Awards list ─────────────────────────── */
+    .award-row {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      gap: 24px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .award-row:first-child { border-top: 1px solid var(--border); }
+
+    .award-year {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted-lt);
+      letter-spacing: 0.04em;
+    }
+
+    .award-event {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .award-place {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      white-space: nowrap;
+    }
+    .award-place.gold { color: var(--accent); }
+
+    /* ── Elsewhere ───────────────────────────── */
+    .elsewhere-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .elsewhere-item {
+      background: var(--bg);
+      padding: 24px 22px;
+      text-decoration: none;
+      display: block;
+      transition: background 0.18s;
+    }
+    .elsewhere-item:hover { background: var(--bg2); }
+
+    .el-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+      margin-bottom: 4px;
+    }
+
+    .el-handle {
+      font-family: 'Lora', serif;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* ── Contact ─────────────────────────────── */
+    .contact {
+      padding: 80px 32px 100px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .contact-h {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(44px, 7vw, 80px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      margin-bottom: 28px;
+      color: var(--text);
+    }
+
+    .contact-email {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 3px;
+      transition: color 0.2s, border-color 0.2s;
+      display: inline-block;
+    }
+    .contact-email:hover { color: var(--accent); border-color: var(--accent); }
+
+    .footer-note {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted-lt);
+      margin-top: 56px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Interests ───────────────────────────── */
+    .interests-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px 56px;
+    }
+
+    .interest-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 21px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .interest-body {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    /* ── Hackathons ──────────────────────────── */
+
+    /* ── Experiments ─────────────────────────── */
+    .exp-intro {
+      font-size: 15px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+
+    .exp-entries {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .exp-entry {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .exp-entry:last-child { border-bottom: 1px solid var(--border); }
+
+    .exp-bullet {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--muted-lt);
+      line-height: 1.4;
+    }
+
+    .exp-text {
+      font-size: 15px;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+    .exp-text strong { color: var(--text); font-weight: 400; }
+
+    /* ── Fade-in ─────────────────────────────── */
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade.in { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ──────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 18px 24px; }
+      .hero { grid-template-columns: 1fr; gap: 28px; padding-left: 24px; padding-right: 24px; }
+      .hero-photo-wrap { padding-top: 0; order: -1; }
+      .hero-photo-wrap img { width: 120px; }
+      .section, .contact { padding-left: 24px; padding-right: 24px; }
+      .divider { padding: 0 24px; }
+      .work-item { grid-template-columns: 1fr; gap: 10px; }
+      .nav-name { display: none; }
+      .interests-grid { grid-template-columns: 1fr; gap: 32px; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .award-row { grid-template-columns: 44px 1fr; }
+      .award-place { grid-column: 2; margin-top: -6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <span class="nav-name">Rajashekar Vennavelli</span>
+    <ul class="nav-links">
+      <li><a href="#interests">Interests</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="#awards">Awards</a></li>
+      <li><a href="#" class="nav-coming">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-intro fade">Building NerveOS—</p>
+      <h1 class="hero-name fade">Rajashekar<br>Vennavelli</h1>
+      <div class="hero-tags fade">
+        <span class="tag">AI Engineer</span>
+        <span class="tag">Fetch.ai · SF</span>
+        <span class="tag">UC Berkeley</span>
+      </div>
+      <p class="hero-bio fade">
+        I build multi-agent AI systems, LLM integrations, and full-stack AI platforms.
+        Currently at <a href="https://fetch.ai" target="_blank">Fetch.ai</a> in San Francisco,
+        where I've shipped agentic demos at Google HQ and Y Combinator.
+        Deepening foundations at <a href="https://berkeley.edu" target="_blank">UC Berkeley</a>
+        in data science and machine learning.
+      </p>
+    </div>
+    <div class="hero-photo-wrap fade">
+      <img src="mypic.jpeg" alt="Rajashekar Vennavelli">
+    </div>
+  </div>
+
+  <div class="divider"><hr></div>
+
+  <!-- Interests -->
+  <section id="interests" class="section">
+    <p class="section-label fade">What I'm into</p>
+    <div class="interests-grid">
+
+      <div class="fade">
+        <div class="interest-title">Hackathons</div>
+        <div class="interest-body">
+          You'll find me at a hackathon most weekends — building, mentoring, or judging. One of the greatest freedoms we have is the freedom to create, and hackathons are where I feel that most vividly. Always hoping to meet you at the next one, or over food.
+        </div>
+      </div>
+
+      <div class="fade">
+        <div class="interest-title">Travel</div>
+        <div class="interest-body">
+          Hackathons have taken me across a lot of university campuses — MIT, Stanford, Princeton, Berkeley, and more. Outside of that, national parks are my reset. There's something grounding about open landscape after months of terminals and demo days.
+        </div>
+      </div>
+
+      <div class="fade">
+        <div class="interest-title">AI for real problems</div>
+        <div class="interest-body">
+          I keep coming back to education, climate, and civic infrastructure — not because they're fashionable, but because the gap between what AI can do and what actually exists in these domains is still enormous and worth closing.
+        </div>
+      </div>
+
+      <div class="fade">
+        <div class="interest-title">Soccer</div>
+        <div class="interest-body">
+          Real Madrid, always. I can watch the beautiful game for hours — especially at its highest level. There's something about the way elite teams move and coordinate under pressure that I find endlessly fascinating.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Work -->
+  <section id="work" class="section">
+    <p class="section-label fade">Experience</p>
+
+    <div class="work-item fade">
+      <div class="work-meta">Nov 2024 — Now<br>San Francisco</div>
+      <div>
+        <div class="work-role">AI Software Engineer</div>
+        <div class="work-co">Fetch.ai</div>
+        <div class="work-desc">
+          Building multi-agent systems and agentic frameworks. Shipped a 29-agent AI film studio
+          demoed at Google HQ; architected the Google A2A protocol bridge for the uAgents ecosystem;
+          deployed 15+ POCs across MCP, LangGraph, and CrewAI. Represented Fetch.ai at 10+ hackathons.
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item fade">
+      <div class="work-meta">Jan — Oct 2024<br>Cupertino</div>
+      <div>
+        <div class="work-role">Full Stack Engineer</div>
+        <div class="work-co">AtlasNova AI</div>
+        <div class="work-desc">
+          Serverless API workflows on AWS Lambda cutting latency 40%. Built an AI document generation
+          system using GPT-4, Claude, and Gemini with custom RAG pipelines via Pinecone for enterprise clients.
+        </div>
+      </div>
+    </div>
+
+    <div class="work-item fade">
+      <div class="work-meta">2020 — 2021<br>Chennai</div>
+      <div>
+        <div class="work-role">Software Engineer</div>
+        <div class="work-co">Citibank</div>
+        <div class="work-desc">
+          REST API development with JWT authentication; transitioned ACE Analytics from monolith to microservices.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 52px">
+      <p class="section-label fade">Education</p>
+      <div class="work-item fade">
+        <div class="work-meta">2025 — 2027<br>Berkeley, CA</div>
+        <div>
+          <div class="work-role">UC Berkeley</div>
+          <div class="work-co">AI Researcher · Data Science · NLP · Machine Learning</div>
+        </div>
+      </div>
+      <div class="work-item fade">
+        <div class="work-meta">2022 — 2024<br>Santa Clara, CA</div>
+        <div>
+          <div class="work-role">Santa Clara University</div>
+          <div class="work-co">M.S. Computer Science &amp; Engineering</div>
+        </div>
+      </div>
+      <div class="work-item fade">
+        <div class="work-meta">Summer 2022<br>Stanford, CA</div>
+        <div>
+          <div class="work-role">Stanford University</div>
+          <div class="work-co">Summer Session</div>
+          <div class="work-desc">
+            Algorithms (CS 161) and Technology Entrepreneurship. Pitched a robotics startup business
+            plan to a panel of venture capitalists; worked through market analysis, business modelling,
+            and go-to-market strategy with feedback from VCs and industry specialists.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Featured Projects -->
+  <section class="section">
+    <div class="section-head">
+      <p class="section-label fade">Projects</p>
+      <a href="projects.html" class="view-all fade">View all ↗</a>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card fade">
+        <div class="feat-cat company">Company Affiliated</div>
+        <div class="feat-title">29-Agent AI Film Studio</div>
+        <div class="feat-context">Fetch.ai · Demoed at Google HQ</div>
+        <p class="feat-desc">29 coordinated agents orchestrating Google Veo 3.1, Gemini, Lyria, and TTS to produce full cinematic short films from a single prompt in ~90 seconds.</p>
+        <a href="https://fetch.ai" target="_blank" class="feat-link">Fetch.ai ↗</a>
+      </div>
+
+      <div class="feat-card fade">
+        <div class="feat-cat hack">SWE / Hackathon</div>
+        <div class="feat-title">Spec-to-Ship Agentic Builder</div>
+        <div class="feat-context">Y Combinator Agents Hackathon · 1st Place</div>
+        <p class="feat-desc">Ingests frontend specs via Notion MCP, builds with Vercel V0, tests via Browser Use MCP, and iterates autonomously until every spec passes.</p>
+        <a href="https://github.com/rajashekarcs2023/yc-hack" target="_blank" class="feat-link">GitHub ↗</a>
+      </div>
+
+      <div class="feat-card fade">
+        <div class="feat-cat hack">SWE / Hackathon</div>
+        <div class="feat-title">HiveMind</div>
+        <div class="feat-context">Stanford TreeHacks 2025 · 1st Place · Education Track</div>
+        <p class="feat-desc">AI peer-to-peer platform reducing classroom knowledge disparities through adaptive tutoring using Groq, Perplexity Sonar, and InterSystems IRIS.</p>
+        <a href="https://github.com/rajashekarcs2023/HiveMind" target="_blank" class="feat-link">GitHub ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Awards -->
+  <section id="awards" class="section">
+    <p class="section-label fade">Awards</p>
+
+    <div class="fade">
+      <div class="award-row">
+        <span class="award-year">2026</span>
+        <span class="award-event">HackPrinceton · Amazon AGI Labs Challenge · Princeton</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">Y Combinator Agents Hackathon · Best Agentic App</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">Stanford TreeHacks · Education Track Grand Prize</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">CalHacks · Best MCP Integration · UC Berkeley</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">UC Santa Cruz · Sustainability Track Grand Prize</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">AGI House · Small Language Model Build Day</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2025</span>
+        <span class="award-event">AGI House · Agents in the Loop · Best Voice AI</span>
+        <span class="award-place">Prize</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2024</span>
+        <span class="award-event">HackMIT · MIT</span>
+        <span class="award-place">3rd Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2023</span>
+        <span class="award-event">HackMIT · MIT</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+      <div class="award-row">
+        <span class="award-year">2023</span>
+        <span class="award-event">CalHacks · ML Innovation Challenge · UC Berkeley</span>
+        <span class="award-place gold">1st Place</span>
+      </div>
+    </div>
+
+    <p class="fade" style="margin-top:20px; font-size:13px; color:var(--muted-lt); font-family:'Outfit',sans-serif;">
+      26 wins total — <a href="https://devpost.com/RajashekarVennavelli" target="_blank" style="color:inherit; text-decoration:none; border-bottom:1px solid var(--border);">full list on Devpost ↗</a>
+    </p>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Elsewhere -->
+  <section class="section" style="padding-top: 56px; padding-bottom: 56px;">
+    <p class="section-label fade">Elsewhere</p>
+    <div class="elsewhere-grid fade">
+      <a href="https://github.com/rajashekarcs2023" target="_blank" class="elsewhere-item">
+        <div class="el-label">GitHub</div>
+        <div class="el-handle">rajashekarcs2023</div>
+      </a>
+      <a href="https://linkedin.com/in/rajashekar-vennavelli" target="_blank" class="elsewhere-item">
+        <div class="el-label">LinkedIn</div>
+        <div class="el-handle">rajashekar-vennavelli</div>
+      </a>
+      <a href="https://devpost.com/RajashekarVennavelli" target="_blank" class="elsewhere-item">
+        <div class="el-label">Devpost</div>
+        <div class="el-handle">RajashekarVennavelli</div>
+      </a>
+      <a href="mailto:rajashekarv@berkeley.edu" class="elsewhere-item">
+        <div class="el-label">Email</div>
+        <div class="el-handle">rajashekarv<br>@berkeley.edu</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Contact -->
+  <div id="contact" class="contact">
+    <h2 class="contact-h fade">Want to build<br>something together?</h2>
+    <a href="mailto:rajashekarv@berkeley.edu" class="contact-email fade">
+      rajashekarv@berkeley.edu
+    </a>
+    <p class="footer-note fade">© 2026 Rajashekar Vennavelli · San Francisco, CA</p>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          observer.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
