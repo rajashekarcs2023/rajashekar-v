@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(open /Users/radhikadanda/rajashekar-v/projects.html)",
-      "Bash(open /Users/radhikadanda/rajashekar-v/index.html)"
+      "Bash(open /Users/radhikadanda/rajashekar-v/index.html)",
+      "Bash(git -C /Users/radhikadanda/rajashekar-v remote set-url origin https://rajashekarcs2023:YOUR_TOKEN@github.com/rajashekarcs2023/rajashekar-v.git)"
     ]
   }
 }
